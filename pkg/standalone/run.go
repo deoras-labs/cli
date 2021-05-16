@@ -84,6 +84,11 @@ func getDaprCommand(appID string, daprHTTPPort int, daprGRPCPort int, appPort in
 
 	daprCMD := binaryFilePath(defaultDaprBinPath(), "daprd")
 
+	// if the daprd executable is not found then depend on the host path
+	if _, err := os.Stat(daprCMD); os.IsNotExist(err) {
+		daprCMD = "daprd"
+	}
+
 	args := []string{
 		"--app-id", appID,
 		"--dapr-http-port", strconv.Itoa(daprHTTPPort),
